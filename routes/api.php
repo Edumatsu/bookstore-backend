@@ -1,19 +1,33 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LivroController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('livros')->controller(LivroController::class)->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{livro}', 'show');
+    Route::post('/', 'store');
+    Route::put('/{livro}', 'update');
+    Route::delete('/{livro}', 'destroy');
 });
+
+/*Route::group(['prefix' => 'autores'], function() {
+    Route::get('/', 'AutorController@index');
+    Route::get('/{autor}', 'AutorController@show');
+    Route::post('/', 'AutorController@store');
+    Route::put('/{autor}', 'AutorController@update');
+    Route::delete('/{autor}', 'AutorController@destroy');
+});
+
+Route::group(['prefix' => 'assuntos'], function() {
+    Route::get('/', 'AssuntoController@index');
+    Route::get('/{assunto}', 'AssuntoController@show');
+    Route::post('/', 'AssuntoController@store');
+    Route::put('/{assunto}', 'AssuntoController@update');
+    Route::delete('/{assunto}', 'AssuntoController@destroy');
+});
+
+Route::group(['prefix' => 'relatorios'], function() {
+    Route::get('/dashboard', 'RelatorioController@dashboard');
+    Route::get('/relatorio', 'RelatorioController@report');
+});*/
