@@ -25,6 +25,6 @@ trait ResponseTrait
 
     public function error(array $data = []): JsonResponse
     {
-        return response()->json($data, Response::HTTP_BAD_REQUEST);
+        return response()->json($data, Response::HTTP_NOT_FOUND);
     }
 }

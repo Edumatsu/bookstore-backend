@@ -33,7 +33,7 @@ abstract class BaseRepository
         $callback($filters[$name]);
     }
 
-    public function find(int $id, ?string $attribute="id", ?array $columns = array('*')): Collection
+    public function find(int $id, ?string $attribute="id", ?array $columns = array('*')): ?Collection
     {
         return $this->query()
             ->select($columns)
@@ -41,7 +41,7 @@ abstract class BaseRepository
             ->first();
     }
 
-    public function findBy(string $attribute, string $value, ?array $columns = array('*')): Collection
+    public function findBy(string $attribute, string $value, ?array $columns = array('*')): ?Collection
     {
         return $this->model->where($attribute, '=', $value)->first($columns);
     }

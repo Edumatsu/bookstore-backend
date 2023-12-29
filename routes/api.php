@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LivroController;
+use App\Http\Controllers\BookController;
 
-Route::prefix('livros')->controller(LivroController::class)->group(function () {
+Route::prefix('books')->controller(BookController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/{id}', 'show');
     Route::post('/', 'store');

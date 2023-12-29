@@ -2,26 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LivroRequest;
-use App\Http\Requests\UpdateLivroRequest;
-use App\Http\Resources\LivroResource;
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
+use App\Http\Resources\BookResource;
 use App\Http\Resources\DefaultCollection;
-use App\Services\LivroService;
+use App\Services\BookService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
- * @group Livros
- * APIs para gerenciar livros
- * @authenticated
- *
- * Class LivroController
+ * Class BookController
  * @package App\Http\Controllers
  */
-class LivroController extends Controller
+class BookController extends Controller
 {
     private $service;
 
-    public function __construct(LivroService $service)
+    public function __construct(BookService $service)
     {
         $this->service = $service;
     }
@@ -32,13 +29,13 @@ class LivroController extends Controller
      */
     public function index(): JsonResponse
     {
-        return $this->success(new DefaultCollection(LivroResource::class, $this->service->index()));
+        return $this->success(new DefaultCollection(BookResource::class, $this->service->index()));
     }
 
     /**
      * Detalhe de um livro
      *
-     * @param Livro $livro
+     * @param Book $livro
      * @return JsonResponse
      */
     public function show(int $id): JsonResponse
@@ -51,16 +48,16 @@ class LivroController extends Controller
             ]);
         }
 
-        return $this->success(new LivroResource($resource));
+        return $this->success(new BookResource($resource));
     }
 
     /**
      * Cria um novo livro
      *
-     * @param LivroRequest $request
+     * @param BookRequest $request
      * @return JsonResponse
      */
-    public function store(LivroRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         $resource = $this->service->store($request->validated());
 
@@ -70,19 +67,24 @@ class LivroController extends Controller
             ]);
         }
 
-        return $this->created(new LivroResource($resource));
+        return $this->created(new BookResource($resource));
     }
 
     /**
      * Atualiza um livro
      *
-     * @param Livro $livro
+     * @param Book $livro
      * @return JsonResponse
      */
-    public function update(UpdateLivroRequest $request, int $id): JsonResponse
+    public function update(UpdateBookRequest $request, int $id): JsonResponse
     {
-        $livro->update($request->validated());
-        $livro->autores()->sync($request->Autores);
+        $resource = $this->service->update($id, $request->validated());
+
+        if (!$resource) {
+            return $this->error([
+                "message" => "Livro não encontrado"
+            ]);
+        }
 
         return $this->noContent();
     }
@@ -90,13 +92,18 @@ class LivroController extends Controller
     /**
      * Exclui um livro
      *
-     * @param Livro $livro
+     * @param Book $livro
      * @return JsonResponse
      */
-    public function destroy(Livro $livro): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        $livro->autores()->detach();
-        $livro->delete();
+        $resource = $this->service->destroy($id);
+
+        if (!$resource) {
+            return $this->error([
+                "message" => "Erro ao excluir o Livro"
+            ]);
+        }
 
         return $this->noContent();
     }

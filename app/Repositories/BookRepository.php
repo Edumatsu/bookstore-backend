@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-class LivrosRepository extends Repository
+class BookRepository extends Repository
 {
     
 }

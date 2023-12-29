@@ -14,7 +14,7 @@ abstract class Repository extends BaseRepository
 
     public function __construct(App $app)
     {
-        $modelFQCN = str_replace('\\Repositories\\', '\\Model\\', static::class);
+        $modelFQCN = str_replace('\\Repositories\\', '\\Models\\', static::class);
 
         $this->fqcn =  preg_replace('@Repository$@', '', $modelFQCN);
 

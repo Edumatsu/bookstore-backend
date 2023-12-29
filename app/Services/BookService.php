@@ -2,19 +2,19 @@
 
 namespace App\Services;
 
-use App\Repositories\LivrosRepository;
+use App\Repositories\BookRepository;
 use Illuminate\Database\Eloquent\Collection;
 use PHPUnit\TestRunner\TestResult\Collector;
 
 /**
- * Class LivroService
+ * Class BookService
  * @package App\Services
  */
-class LivroService
+class BookService
 {
     private $repository;
 
-    public function __construct(LivrosRepository $repository)
+    public function __construct(BookRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -31,7 +31,7 @@ class LivroService
      * @param integer $id
      * @return Collection
      */
-    public function show(int $id): Collection
+    public function show(int $id): ?Collection
     {
         return $this->repository->find($id, "Codl");
     }
