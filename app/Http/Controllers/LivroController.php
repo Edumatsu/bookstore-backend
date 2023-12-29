@@ -6,7 +6,7 @@ use App\Http\Requests\LivroRequest;
 use App\Http\Requests\UpdateLivroRequest;
 use App\Http\Resources\LivroResource;
 use App\Http\Resources\DefaultCollection;
-use App\Models\Livro;
+use App\Services\LivroService;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -19,6 +19,12 @@ use Illuminate\Http\JsonResponse;
  */
 class LivroController extends Controller
 {
+    private $service;
+
+    public function __construct(LivroService $service)
+    {
+        $this->service = $service;
+    }
     /**
      * Lista todos os livros
      *
@@ -26,7 +32,7 @@ class LivroController extends Controller
      */
     public function index(): JsonResponse
     {
-        return $this->success(new DefaultCollection(LivroResource::class, Livro::all()));
+        return $this->success(new DefaultCollection(LivroResource::class, $this->service->index()));
     }
 
     /**
@@ -35,9 +41,17 @@ class LivroController extends Controller
      * @param Livro $livro
      * @return JsonResponse
      */
-    public function show(Livro $livro): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        return $this->success(new LivroResource($livro));
+        $resource = $this->service->show($id);
+
+        if (!$resource) {
+            return $this->error([
+                "message" => "Livro não encontrado"
+            ]);
+        }
+
+        return $this->success(new LivroResource($resource));
     }
 
     /**
@@ -48,8 +62,13 @@ class LivroController extends Controller
      */
     public function store(LivroRequest $request): JsonResponse
     {
-        $resource = Livro::query()->create($request->validated());
-        $resource->autores()->attach($request->Autores);
+        $resource = $this->service->store($request->validated());
+
+        if (!$resource) {
+            return $this->error([
+                "message" => "Erro na criação do livro"
+            ]);
+        }
 
         return $this->created(new LivroResource($resource));
     }
@@ -60,7 +79,7 @@ class LivroController extends Controller
      * @param Livro $livro
      * @return JsonResponse
      */
-    public function update(UpdateLivroRequest $request, Livro $livro): JsonResponse
+    public function update(UpdateLivroRequest $request, int $id): JsonResponse
     {
         $livro->update($request->validated());
         $livro->autores()->sync($request->Autores);

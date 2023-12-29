@@ -5,10 +5,10 @@ use App\Http\Controllers\LivroController;
 
 Route::prefix('livros')->controller(LivroController::class)->group(function () {
     Route::get('/', 'index');
-    Route::get('/{livro}', 'show');
+    Route::get('/{id}', 'show');
     Route::post('/', 'store');
-    Route::put('/{livro}', 'update');
-    Route::delete('/{livro}', 'destroy');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
 });
 
 /*Route::group(['prefix' => 'autores'], function() {

@@ -22,4 +22,9 @@ trait ResponseTrait
     {
         return response()->json($data, Response::HTTP_CREATED);
     }
+
+    public function error(array $data = []): JsonResponse
+    {
+        return response()->json($data, Response::HTTP_BAD_REQUEST);
+    }
 }

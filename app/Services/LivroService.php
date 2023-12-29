@@ -1,84 +1,76 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use App\Http\Requests\LivroRequest;
-use App\Http\Requests\UpdateLivroRequest;
-use App\Http\Resources\LivroResource;
-use App\Http\Resources\DefaultCollection;
-use App\Models\Livro;
-use Illuminate\Http\JsonResponse;
+use App\Repositories\LivrosRepository;
+use Illuminate\Database\Eloquent\Collection;
+use PHPUnit\TestRunner\TestResult\Collector;
 
 /**
- * @group Livros
- * APIs para gerenciar livros
- * @authenticated
- *
- * Class LivroController
- * @package App\Http\Controllers
+ * Class LivroService
+ * @package App\Services
  */
-class LivroController extends Controller
+class LivroService
 {
-    /**
-     * Lista todos os livros
-     *
-     * @return JsonResponse
-     */
-    public function index(): JsonResponse
+    private $repository;
+
+    public function __construct(LivrosRepository $repository)
     {
-        return $this->success(new DefaultCollection(LivroResource::class, Livro::all()));
+        $this->repository = $repository;
+    }
+    
+    /**
+     * @return Collection
+     */
+    public function index(): Collection
+    {
+        return $this->repository->all();
     }
 
     /**
-     * Detalhe de um livro
-     *
-     * @param Livro $livro
-     * @return JsonResponse
+     * @param integer $id
+     * @return Collection
      */
-    public function show(Livro $livro): JsonResponse
+    public function show(int $id): Collection
     {
-        return $this->success(new LivroResource($livro));
+        return $this->repository->find($id, "Codl");
     }
 
     /**
-     * Cria um novo livro
-     *
-     * @param LivroRequest $request
-     * @return JsonResponse
+     * @param array $data
+     * @return Collection
      */
-    public function store(LivroRequest $request): JsonResponse
+    public function store(array $data): Collection
     {
-        $resource = Livro::query()->create($request->validated());
-        $resource->autores()->attach($request->Autores);
+        $resource = $this->repository->create($data);
+        $resource->autores()->attach($data['Autores']);
 
-        return $this->created(new LivroResource($resource));
+        return $resource;
     }
 
     /**
-     * Atualiza um livro
-     *
-     * @param Livro $livro
-     * @return JsonResponse
+     * @param int $id
+     * @param array $data
+     * @return Collection
      */
-    public function update(UpdateLivroRequest $request, Livro $livro): JsonResponse
+    public function update($id, $data): Collection
     {
-        $livro->update($request->validated());
-        $livro->autores()->sync($request->Autores);
+        $resource = $this->repository->find($id, "Codl");
 
-        return $this->noContent();
+        $resource->autores()->sync($data['Autores']);
+
+        return $this->repository->update($data, $id, 'Codl');
     }
 
     /**
-     * Exclui um livro
-     *
-     * @param Livro $livro
+     * @param int $id
      * @return JsonResponse
      */
-    public function destroy(Livro $livro): JsonResponse
+    public function destroy(int $id): Collection
     {
-        $livro->autores()->detach();
-        $livro->delete();
+        $resource = $this->repository->find($id, "Codl");
+        $resource->autores()->detach();
 
-        return $this->noContent();
+        return $this->repository->delete($id, "Codl");
     }
 }
