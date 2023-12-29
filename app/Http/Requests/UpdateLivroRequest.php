@@ -27,7 +27,9 @@ class UpdateLivroRequest extends FormRequest
             'Titulo' => 'min:3|max:40',
             'Editora' => 'min:3|max:40',
             'Edicao' => 'integer',
-            'AnoPublicacao' => 'min:4|max:4'
+            'AnoPublicacao' => 'min:4|max:4',
+            'Autores' => 'required|array',
+            'Autores.*.CodAu' => 'required|integer',
         ];
     }
 
@@ -49,6 +51,14 @@ class UpdateLivroRequest extends FormRequest
             'AnoPublicacao' => [
                 'description' => 'Ano de publicação do Livro',
                 'example' => 1954,
+            ],
+            'Valor' => [
+                'description' => 'Valor (preço) do Livro',
+                'example' => 199.99,
+            ],
+            'Autores.*.CodAu' => [
+                'description' => 'Id do Autor',
+                'example' => '1',
             ],
         ];
     }

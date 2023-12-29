@@ -17,7 +17,8 @@ class Livro extends Model
         'Titulo',
         'Editora',
         'Edicao',
-        'AnoPublicacao'
+        'AnoPublicacao',
+        'Valor',
     ];
 
     public function autores(): BelongsToMany

@@ -28,6 +28,7 @@ class LivroRequest extends FormRequest
             'Editora' => 'required|min:3|max:40',
             'Edicao' => 'required|integer',
             'AnoPublicacao' => 'required|min:4|max:4',
+            'Valor' => 'required|float',
             'Autores' => 'required|array',
             'Autores.*.CodAu' => 'required|integer',
         ];
@@ -51,6 +52,10 @@ class LivroRequest extends FormRequest
             'AnoPublicacao' => [
                 'description' => 'Ano de publicação do Livro',
                 'example' => 1954,
+            ],
+            'Valor' => [
+                'description' => 'Valor (preço) do Livro',
+                'example' => 199.99,
             ],
             'Autores.*.CodAu' => [
                 'description' => 'Id do Autor',
