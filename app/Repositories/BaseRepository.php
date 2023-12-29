@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseRepository
 {
@@ -14,26 +15,26 @@ abstract class BaseRepository
         $this->query();
     }
 
-    protected function setInstanceModel($model) 
+    protected function setInstanceModel($model): void
     {
         $this->model = $model;
     }
 
-    protected function hasFilter(array $filters, string $name)
+    protected function hasFilter(array $filters, string $name): bool
     {
         return array_key_exists($name, $filters) && $name && $filters[$name] !== null;
     }
 
-    protected function filter(array $filters, string $name, callable $callback)
+    protected function filter(array $filters, string $name, callable $callback): ?callable
     {
         if (!$this->hasFilter($filters, $name)) {
-            return;
+            return null;
         }
 
         $callback($filters[$name]);
     }
 
-    public function find(int $id, ?string $attribute="id", ?array $columns = array('*')): ?Collection
+    public function find(int $id, ?string $attribute="id", ?array $columns = array('*')): ?Model
     {
         return $this->query()
             ->select($columns)
@@ -41,7 +42,7 @@ abstract class BaseRepository
             ->first();
     }
 
-    public function findBy(string $attribute, string $value, ?array $columns = array('*')): ?Collection
+    public function findBy(string $attribute, string $value, ?array $columns = array('*')): ?Model
     {
         return $this->model->where($attribute, '=', $value)->first($columns);
     }
@@ -51,19 +52,19 @@ abstract class BaseRepository
         return $this->query()->get($columns);
     }
 
-    public function create(array $data): Collection
+    public function create(array $data): ?Model
     {
         return $this->model->create($data);
     }
 
-    public function update(array $data, int $id, ?string $attribute="id"): Collection
+    public function update(array $data, int $id, ?string $attribute="id"): ?Model
     {
         $this->model->where($attribute, '=', $id)->update($data);
 
         return $this->model->where($attribute, '=', $id)->first();
     }
 
-    public function delete(int $id, ?string $attribute="id"): Collection
+    public function delete(int $id, ?string $attribute="id"): ?Model
     {
         $data = $this->model->where($attribute, '=', $id);
         $response = $data->first();

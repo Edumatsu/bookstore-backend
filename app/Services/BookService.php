@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Repositories\BookRepository;
+use App\Models\Book;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use PHPUnit\TestRunner\TestResult\Collector;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class BookService
@@ -31,7 +33,7 @@ class BookService
      * @param integer $id
      * @return Collection
      */
-    public function show(int $id): ?Collection
+    public function show(int $id): ?Book
     {
         return $this->repository->find($id, "Codl");
     }
@@ -40,12 +42,24 @@ class BookService
      * @param array $data
      * @return Collection
      */
-    public function store(array $data): Collection
+    public function store(array $data): ?Book
     {
-        $resource = $this->repository->create($data);
-        $resource->autores()->attach($data['Autores']);
+        DB::beginTransaction();
 
-        return $resource;
+        try {
+            $resource = $this->repository->create($data);
+
+            $ids = array_column($data['Autores'], 'id');
+            $resource->autores()->attach($ids);
+
+            DB::commit();
+
+            return $resource;
+        } catch (Exception) {
+            DB::rollBack();
+        }
+
+        return null;
     }
 
     /**
@@ -53,24 +67,55 @@ class BookService
      * @param array $data
      * @return Collection
      */
-    public function update($id, $data): Collection
+    public function update($id, $data): ?Book
     {
-        $resource = $this->repository->find($id, "Codl");
+        DB::beginTransaction();
 
-        $resource->autores()->sync($data['Autores']);
+        try {
+            $resource = $this->repository->find($id, "Codl");
 
-        return $this->repository->update($data, $id, 'Codl');
+            $ids = array_column($data['Autores'], 'id');
+            $resource->autores()->sync($ids);
+
+            unset($data['Autores']);
+
+            $this->repository->update($data, $id, 'Codl');
+            
+            DB::commit();
+
+            return $resource;
+        } catch (Exception) {
+            DB::rollBack();
+        }
+
+        return null;
     }
 
     /**
      * @param int $id
      * @return JsonResponse
      */
-    public function destroy(int $id): Collection
+    public function destroy(int $id): ?Book
     {
-        $resource = $this->repository->find($id, "Codl");
-        $resource->autores()->detach();
+        DB::beginTransaction();
 
-        return $this->repository->delete($id, "Codl");
+        try {
+            $resource = $this->repository->find($id, "Codl");
+
+            if ($resource) {
+                $resource->autores()->detach(1);
+
+                $this->repository->delete($id, "Codl");
+
+                DB::commit();
+
+                return $resource;
+            }
+        } catch (Exception) {
+            DB::rollBack();
+        }
+
+        return null;
+
     }
 }

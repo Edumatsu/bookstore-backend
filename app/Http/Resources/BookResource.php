@@ -12,14 +12,16 @@ class BookResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
-            'Codl' => (int) $this->Codl,
-            'Titulo' => $this->Titulo,
-            'Editora' => $this->Editora,
-            'Edicao' => (int) $this->Edicao,
-            'AnoPublicacao' => $this->AnoPublicacao,
+            'id' => (int) $this->Codl,
+            'title' => $this->Titulo,
+            'publishingCompany' => $this->Editora,
+            'edition' => (int) $this->Edicao,
+            'yearPublication' => $this->AnoPublicacao,
+            'value' => (float) $this->Valor,
+            'authors' => AuthorResource::collection($this->autores),
         ];
     }
 }

@@ -35,7 +35,7 @@ class DefaultCollection extends ResourceCollection
      * @param  Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         $content = [
             'data' => $this->resourceClass::collection($this->collection),
@@ -63,7 +63,7 @@ class DefaultCollection extends ResourceCollection
         return $content;
     }
 
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         $jsonResponse = json_decode($response->getContent(), true);
         unset($jsonResponse['links'], $jsonResponse['meta']);

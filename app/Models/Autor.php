@@ -19,6 +19,6 @@ class Autor extends Model
 
     public function autores(): BelongsToMany
     {
-        return $this->belongsToMany(Livro::class, 'Livro_Autor', 'Autor_CodAu', 'Livro_Codl');
+        return $this->belongsToMany(Book::class, 'Livro_Autor', 'Autor_CodAu', 'Livro_Codl');
     }
 }

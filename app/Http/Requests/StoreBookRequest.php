@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Adapters\BookRequestAdapter;
 
 class StoreBookRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreBookRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,46 +22,70 @@ class StoreBookRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'Titulo' => 'required|min:3|max:40',
-            'Editora' => 'required|min:3|max:40',
-            'Edicao' => 'required|integer',
-            'AnoPublicacao' => 'required|min:4|max:4',
-            'Valor' => 'required|float',
-            'Autores' => 'required|array',
-            'Autores.*.CodAu' => 'required|integer',
+            'title' => 'required|max:40',
+            'publishingCompany' => 'required|max:40',
+            'edition' => 'required|integer',
+            'yearPublication' => 'required|min:4|max:4',
+            'value' => 'required|numeric',
+            'authors' => 'required|array',
+            'authors.*.id' => 'required|integer|exists:Autor,CodAu',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'O campo Título é obrigatório.',
+            'title.max' => 'O campo Título não pode conter mais que 40 caracteres.',
+            'publishingCompany.required' => 'O campo Editora é obrigatório.',
+            'publishingCompany.max' => 'O campo Editora não pode conter mais que 40 caracteres.',
+            'Edition.required' => 'O campo Edição é obrigatório.',
+            'yearPublication.required' => 'O campo Ano de Publicação é obrigatório.',
+            'yearPublication.min' => 'O campo Ano de Publicação deve conter 4 caracteres.',
+            'yearPublication.max' => 'O campo Ano de Publicação deve conter 4 caracteres.',
+            'value.required' => 'O campo Valor é obrigatório.',
+            'value.float' => 'O campo Valor deve ser um número.',
+            'authors.required' => 'É necessário ter pelo menos um Autor por Livro.',
+            'authors.*.id.required' => 'É necessário informar o Id do Autor.',
+            'authors.*.id.exists' => 'Um ou mais Autores informados não existem.',
         ];
     }
 
     public function bodyParameters(): array
     {
         return [
-            'Titulo' => [
+            'title' => [
                 'description' => 'O título do Livro',
                 'example' => 'O senhor dos anéis',
             ],
-            'Editora' => [
+            'publishingCompany' => [
                 'description' => 'A Editora do Livro',
                 'example' => 'Allen & Unwin',
             ],
-            'Edicao' => [
+            'Edition' => [
                 'description' => 'A Edição do Livro',
                 'example' => '1',
             ],
-            'AnoPublicacao' => [
+            'yearPublication' => [
                 'description' => 'Ano de publicação do Livro',
                 'example' => 1954,
             ],
-            'Valor' => [
+            'value' => [
                 'description' => 'Valor (preço) do Livro',
                 'example' => 199.99,
             ],
-            'Autores.*.CodAu' => [
+            'authors.*.id' => [
                 'description' => 'Id do Autor',
                 'example' => '1',
             ],
         ];
+    }
+
+    public function validated($key = null, $default = null): array
+    {
+        return BookRequestAdapter::transform( $this->all() );
     }
 }

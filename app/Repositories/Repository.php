@@ -25,7 +25,7 @@ abstract class Repository extends BaseRepository
         parent::__construct($app);
     }
 
-    public function setModel()
+    public function setModel(): void
     {
         $model = $this->app->make($this->fqcn);
         

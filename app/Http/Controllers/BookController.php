@@ -57,7 +57,7 @@ class BookController extends Controller
      * @param BookRequest $request
      * @return JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreBookRequest $request): JsonResponse
     {
         $resource = $this->service->store($request->validated());
 
@@ -82,7 +82,7 @@ class BookController extends Controller
 
         if (!$resource) {
             return $this->error([
-                "message" => "Livro não encontrado"
+                "message" => "Erro ao alterar o Livro"
             ]);
         }
 
