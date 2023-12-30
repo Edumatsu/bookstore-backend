@@ -13,6 +13,7 @@ class BookRequestAdapter
             "AnoPublicacao" => $data["yearPublication"],
             "Valor" => $data["value"],
             "Autores" => $data["authors"],
+            "Assuntos" => $data["subjects"],
         ];
     }
 
@@ -25,6 +26,7 @@ class BookRequestAdapter
             "yearPublication" => $data["AnoPublicacao"],
             "value" => $data["Valor"],
             "authors" => $data["Autores"],
+            "subjects" => $data["Assuntos"],
         ];
     }
 }

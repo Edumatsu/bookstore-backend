@@ -32,25 +32,25 @@ class UpdateBookRequest extends FormRequest
             'value' => 'numeric',
             'authors' => 'required|array',
             'authors.*.id' => 'required|integer|exists:Autor,CodAu',
+            'subjects' => 'required|array',
+            'subjects.*.id' => 'required|integer|exists:Assunto,codAs',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'title.required' => 'O campo Título é obrigatório.',
             'title.max' => 'O campo Título não pode conter mais que 40 caracteres.',
-            'publishingCompany.required' => 'O campo Editora é obrigatório.',
             'publishingCompany.max' => 'O campo Editora não pode conter mais que 40 caracteres.',
-            'Edition.required' => 'O campo Edição é obrigatório.',
-            'yearPublication.required' => 'O campo Ano de Publicação é obrigatório.',
             'yearPublication.min' => 'O campo Ano de Publicação deve conter 4 caracteres.',
             'yearPublication.max' => 'O campo Ano de Publicação deve conter 4 caracteres.',
-            'value.required' => 'O campo Valor é obrigatório.',
             'value.float' => 'O campo Valor deve ser um número.',
             'authors.required' => 'É necessário ter pelo menos um Autor por Livro.',
             'authors.*.id.required' => 'É necessário informar o Id do Autor.',
             'authors.*.id.exists' => 'Um ou mais Autores informados não existem.',
+            'subjects.required' => 'É necessário ter pelo menos um Assunto por Livro.',
+            'subjects.*.id.required' => 'É necessário informar o Id do Assunto.',
+            'subjects.*.id.exists' => 'Um ou mais Assuntos informados não existem.',
         ];
     }
 
@@ -79,6 +79,10 @@ class UpdateBookRequest extends FormRequest
             ],
             'authors.*.id' => [
                 'description' => 'Id do Autor',
+                'example' => '1',
+            ],
+            'subjects.*.id' => [
+                'description' => 'Id do Assunto',
                 'example' => '1',
             ],
         ];

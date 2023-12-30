@@ -22,6 +22,7 @@ class BookResource extends JsonResource
             'yearPublication' => $this->AnoPublicacao,
             'value' => (float) $this->Valor,
             'authors' => AuthorResource::collection($this->authors),
+            'subjects' => SubjectResource::collection($this->subjects),
         ];
     }
 }

@@ -32,6 +32,8 @@ class StoreBookRequest extends FormRequest
             'value' => 'required|numeric',
             'authors' => 'required|array',
             'authors.*.id' => 'required|integer|exists:Autor,CodAu',
+            'subjects' => 'required|array',
+            'subjects.*.id' => 'required|integer|exists:Assunto,codAs',
         ];
     }
 
@@ -51,6 +53,9 @@ class StoreBookRequest extends FormRequest
             'authors.required' => 'É necessário ter pelo menos um Autor por Livro.',
             'authors.*.id.required' => 'É necessário informar o Id do Autor.',
             'authors.*.id.exists' => 'Um ou mais Autores informados não existem.',
+            'subjects.required' => 'É necessário ter pelo menos um Assunto por Livro.',
+            'subjects.*.id.required' => 'É necessário informar o Id do Assunto.',
+            'subjects.*.id.exists' => 'Um ou mais Assuntos informados não existem.',
         ];
     }
 
@@ -79,6 +84,10 @@ class StoreBookRequest extends FormRequest
             ],
             'authors.*.id' => [
                 'description' => 'Id do Autor',
+                'example' => '1',
+            ],
+            'subjects.*.id' => [
+                'description' => 'Id do Assunto',
                 'example' => '1',
             ],
         ];

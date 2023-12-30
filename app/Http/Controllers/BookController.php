@@ -8,7 +8,6 @@ use App\Http\Resources\BookResource;
 use App\Http\Resources\DefaultCollection;
 use App\Services\BookService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 /**
  * Class BookController
@@ -36,7 +35,7 @@ class BookController extends Controller
     /**
      * Detalhe de um livro
      *
-     * @param  Book $livro
+     * @param  int $id
      * @return JsonResponse
      */
     public function show(int $id): JsonResponse
@@ -57,7 +56,7 @@ class BookController extends Controller
     /**
      * Cria um novo livro
      *
-     * @param  BookRequest $request
+     * @param  StoreBookRequest $request
      * @return JsonResponse
      */
     public function store(StoreBookRequest $request): JsonResponse
@@ -78,7 +77,8 @@ class BookController extends Controller
     /**
      * Atualiza um livro
      *
-     * @param  Book $livro
+     * @param  int               $id
+     * @param  UpdateBookRequest $request
      * @return JsonResponse
      */
     public function update(UpdateBookRequest $request, int $id): JsonResponse
@@ -99,7 +99,7 @@ class BookController extends Controller
     /**
      * Exclui um livro
      *
-     * @param  Book $livro
+     * @param  int $id
      * @return JsonResponse
      */
     public function destroy(int $id): JsonResponse

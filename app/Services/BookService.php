@@ -53,6 +53,9 @@ class BookService
             $ids = array_column($data['Autores'], 'id');
             $resource->authors()->attach($ids);
 
+            $ids = array_column($data['Assuntos'], 'id');
+            $resource->subjects()->attach($ids);
+
             DB::commit();
 
             return $resource;
@@ -78,7 +81,10 @@ class BookService
             $ids = array_column($data['Autores'], 'id');
             $resource->authors()->sync($ids);
 
-            unset($data['Autores']);
+            $ids = array_column($data['Assuntos'], 'id');
+            $resource->subjects()->sync($ids);
+
+            unset($data['Autores'], $data['Assuntos']);
 
             $this->repository->update($data, $id, 'Codl');
             
@@ -104,7 +110,8 @@ class BookService
             $resource = $this->repository->find($id, "Codl");
 
             if ($resource) {
-                $resource->authors()->detach(1);
+                $resource->authors()->detach();
+                $resource->subjects()->detach();
 
                 $this->repository->delete($id, "Codl");
 
