@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Book extends Model
 {
+    use HasFactory;
+
     protected $table = "Livro";
 
     protected $primaryKey = 'Codl';
@@ -21,8 +24,13 @@ class Book extends Model
         'Valor',
     ];
 
-    public function autores(): BelongsToMany
+    public function authors(): BelongsToMany
     {
-        return $this->belongsToMany(Autor::class, 'Livro_Autor', 'Livro_Codl', 'Autor_CodAu');
+        return $this->belongsToMany(Author::class, 'Livro_Autor', 'Livro_Codl', 'Autor_CodAu');
+    }
+
+    public function subjects(): BelongsToMany
+    {
+        return $this->belongsToMany(Subject::class, 'Livro_Assunto', 'Assunto_codAs', 'Livro_Codl');
     }
 }

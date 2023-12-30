@@ -14,4 +14,16 @@ class BookRequestAdapter {
             "Autores" => $data["authors"],
         ];
     }
+
+    public static function revert(array $data): array
+    {
+        return [
+            "title" => $data["Titulo"],
+            "publishingCompany" => $data["Editora"],
+            "edition" => $data["Edicao"],
+            "yearPublication" => $data["AnoPublicacao"],
+            "value" => $data["Valor"],
+            "authors" => $data["Autores"],
+        ];
+    }
 }
