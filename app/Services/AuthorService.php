@@ -94,6 +94,7 @@ class AuthorService
             $resource = $this->repository->find($id, "CodAu");
 
             if ($resource) {
+                $resource->books()->detach();
                 $this->repository->delete($id, "CodAu");
 
                 DB::commit();

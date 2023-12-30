@@ -25,22 +25,22 @@ class UpdateSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subject' => 'max:20',
+            'description' => 'max:20',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'subject.required' => 'O campo Assunto é obrigatório.',
-            'subject.max' => 'O campo Assunto não pode conter mais que 40 caracteres.',
+            'description.required' => 'O campo Assunto é obrigatório.',
+            'description.max' => 'O campo Assunto não pode conter mais que 20 caracteres.',
         ];
     }
 
     public function bodyParameters(): array
     {
         return [
-            'subject' => [
+            'description' => [
                 'description' => 'O Assunto',
                 'example' => 'Romance',
             ],

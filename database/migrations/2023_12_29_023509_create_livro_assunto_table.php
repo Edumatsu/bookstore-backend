@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('Livro_Assunto', function (Blueprint $table) {
             $table->integer('Livro_Codl')->unsigned();
-            $table->integer('Assunto_CodAs')->unsigned();
+            $table->integer('Assunto_codAs')->unsigned();
             
             $table->foreign('Livro_Codl')->references('Codl')->on('Livro')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('Assunto_CodAs')->references('CodAs')->on('Assunto')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('Assunto_codAs')->references('codAs')->on('Assunto')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
