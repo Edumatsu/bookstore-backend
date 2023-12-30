@@ -10,7 +10,7 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $table = "Livro";
+    protected $table = 'Livro';
 
     protected $primaryKey = 'Codl';
 

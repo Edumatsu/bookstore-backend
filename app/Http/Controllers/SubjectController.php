@@ -9,35 +9,20 @@ use App\Http\Resources\DefaultCollection;
 use App\Services\SubjectService;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Class SubjectController
- *
- * @package App\Http\Controllers
- */
 class SubjectController extends Controller
 {
-    private $service;
+    private SubjectService $service;
 
     public function __construct(SubjectService $service)
     {
         $this->service = $service;
     }
-    /**
-     * Lista todos os assuntos
-     *
-     * @return JsonResponse
-     */
+
     public function index(): JsonResponse
     {
         return $this->success(new DefaultCollection(SubjectResource::class, $this->service->index()));
     }
 
-    /**
-     * Detalhe de um assunto
-     *
-     * @param  int $id
-     * @return JsonResponse
-     */
     public function show(int $id): JsonResponse
     {
         $resource = $this->service->show($id);
@@ -45,7 +30,7 @@ class SubjectController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Assunto não encontrado"
+                    'message' => 'Assunto não encontrado'
                 ]
             );
         }
@@ -53,12 +38,6 @@ class SubjectController extends Controller
         return $this->success(new SubjectResource($resource));
     }
 
-    /**
-     * Cria um novo assunto
-     *
-     * @param  StoreSubjectRequest $request
-     * @return JsonResponse
-     */
     public function store(StoreSubjectRequest $request): JsonResponse
     {
         $resource = $this->service->store($request->validated());
@@ -66,7 +45,7 @@ class SubjectController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Erro na criação do Assunto"
+                    'message' => 'Erro na criação do Assunto'
                 ]
             );
         }
@@ -74,13 +53,6 @@ class SubjectController extends Controller
         return $this->created(new SubjectResource($resource));
     }
 
-    /**
-     * Atualiza um assunto
-     *
-     * @param  int                  $id
-     * @param  UpdateSubjectRequest $request
-     * @return JsonResponse
-     */
     public function update(UpdateSubjectRequest $request, int $id): JsonResponse
     {
         $resource = $this->service->update($id, $request->validated());
@@ -88,7 +60,7 @@ class SubjectController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Erro ao alterar o Assunto"
+                    'message' => 'Erro ao alterar o Assunto'
                 ]
             );
         }
@@ -96,12 +68,6 @@ class SubjectController extends Controller
         return $this->noContent();
     }
 
-    /**
-     * Exclui um assunto
-     *
-     * @param  int $id
-     * @return JsonResponse
-     */
     public function destroy(int $id): JsonResponse
     {
         $resource = $this->service->destroy($id);
@@ -109,7 +75,7 @@ class SubjectController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Erro ao excluir o Assunto"
+                    'message' => 'Erro ao excluir o Assunto'
                 ]
             );
         }

@@ -9,35 +9,20 @@ use App\Http\Resources\DefaultCollection;
 use App\Services\BookService;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Class BookController
- *
- * @package App\Http\Controllers
- */
 class BookController extends Controller
 {
-    private $service;
+    private BookService $service;
 
     public function __construct(BookService $service)
     {
         $this->service = $service;
     }
-    /**
-     * Lista todos os livros
-     *
-     * @return JsonResponse
-     */
+
     public function index(): JsonResponse
     {
         return $this->success(new DefaultCollection(BookResource::class, $this->service->index()));
     }
 
-    /**
-     * Detalhe de um livro
-     *
-     * @param  int $id
-     * @return JsonResponse
-     */
     public function show(int $id): JsonResponse
     {
         $resource = $this->service->show($id);
@@ -45,7 +30,7 @@ class BookController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Livro não encontrado"
+                    'message' => 'Livro não encontrado'
                 ]
             );
         }
@@ -53,12 +38,6 @@ class BookController extends Controller
         return $this->success(new BookResource($resource));
     }
 
-    /**
-     * Cria um novo livro
-     *
-     * @param  StoreBookRequest $request
-     * @return JsonResponse
-     */
     public function store(StoreBookRequest $request): JsonResponse
     {
         $resource = $this->service->store($request->validated());
@@ -66,7 +45,7 @@ class BookController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Erro na criação do livro"
+                    'message' => 'Erro na criação do livro'
                 ]
             );
         }
@@ -74,13 +53,6 @@ class BookController extends Controller
         return $this->created(new BookResource($resource));
     }
 
-    /**
-     * Atualiza um livro
-     *
-     * @param  int               $id
-     * @param  UpdateBookRequest $request
-     * @return JsonResponse
-     */
     public function update(UpdateBookRequest $request, int $id): JsonResponse
     {
         $resource = $this->service->update($id, $request->validated());
@@ -88,7 +60,7 @@ class BookController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Erro ao alterar o Livro"
+                    'message' => 'Erro ao alterar o Livro'
                 ]
             );
         }
@@ -96,12 +68,6 @@ class BookController extends Controller
         return $this->noContent();
     }
 
-    /**
-     * Exclui um livro
-     *
-     * @param  int $id
-     * @return JsonResponse
-     */
     public function destroy(int $id): JsonResponse
     {
         $resource = $this->service->destroy($id);
@@ -109,7 +75,7 @@ class BookController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Erro ao excluir o Livro"
+                    'message' => 'Erro ao excluir o Livro'
                 ]
             );
         }

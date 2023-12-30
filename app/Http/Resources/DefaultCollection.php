@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -22,7 +23,7 @@ class DefaultCollection extends ResourceCollection
      * @param  mixed $resource
      * @return void
      */
-    public function __construct($resourceClass, $resource)
+    public function __construct(mixed $resourceClass, mixed $resource)
     {
         parent::__construct($resource);
 
@@ -35,7 +36,7 @@ class DefaultCollection extends ResourceCollection
      * @param  Request $request
      * @return array
      */
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
         $content = [
             'data' => $this->resourceClass::collection($this->collection),
@@ -62,7 +63,7 @@ class DefaultCollection extends ResourceCollection
         return $content;
     }
 
-    public function withResponse($request, $response): void
+    public function withResponse(Request $request, JsonResponse $response): void
     {
         $jsonResponse = json_decode($response->getContent(), true);
         unset($jsonResponse['links'], $jsonResponse['meta']);

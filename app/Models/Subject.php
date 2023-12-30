@@ -10,7 +10,7 @@ class Subject extends Model
 {
     use HasFactory;
 
-    protected $table = "Assunto";
+    protected $table = 'Assunto';
 
     protected $primaryKey = 'codAs';
 

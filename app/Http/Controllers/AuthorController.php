@@ -9,35 +9,20 @@ use App\Http\Resources\DefaultCollection;
 use App\Services\AuthorService;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Class AuthorController
- *
- * @package App\Http\Controllers
- */
 class AuthorController extends Controller
 {
-    private $service;
+    private AuthorService $service;
 
     public function __construct(AuthorService $service)
     {
         $this->service = $service;
     }
-    /**
-     * Lista todos os autores
-     *
-     * @return JsonResponse
-     */
+
     public function index(): JsonResponse
     {
         return $this->success(new DefaultCollection(AuthorResource::class, $this->service->index()));
     }
 
-    /**
-     * Detalhe de um autor
-     *
-     * @param  int $id
-     * @return JsonResponse
-     */
     public function show(int $id): JsonResponse
     {
         $resource = $this->service->show($id);
@@ -45,7 +30,7 @@ class AuthorController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Autor não encontrado"
+                    'message' => 'Autor não encontrado'
                 ]
             );
         }
@@ -53,12 +38,6 @@ class AuthorController extends Controller
         return $this->success(new AuthorResource($resource));
     }
 
-    /**
-     * Cria um novo autor
-     *
-     * @param  StoreAuthorRequest $request
-     * @return JsonResponse
-     */
     public function store(StoreAuthorRequest $request): JsonResponse
     {
         $resource = $this->service->store($request->validated());
@@ -66,7 +45,7 @@ class AuthorController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Erro na criação do autor"
+                    'message' => 'Erro na criação do autor'
                 ]
             );
         }
@@ -74,13 +53,6 @@ class AuthorController extends Controller
         return $this->created(new AuthorResource($resource));
     }
 
-    /**
-     * Atualiza um autor
-     *
-     * @param  int                 $id
-     * @param  UpdateAuthorRequest $request
-     * @return JsonResponse
-     */
     public function update(UpdateAuthorRequest $request, int $id): JsonResponse
     {
         $resource = $this->service->update($id, $request->validated());
@@ -88,7 +60,7 @@ class AuthorController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Erro ao alterar o Autor"
+                    'message' => 'Erro ao alterar o Autor'
                 ]
             );
         }
@@ -96,12 +68,6 @@ class AuthorController extends Controller
         return $this->noContent();
     }
 
-    /**
-     * Exclui um autor
-     *
-     * @param  int $id
-     * @return JsonResponse
-     */
     public function destroy(int $id): JsonResponse
     {
         $resource = $this->service->destroy($id);
@@ -109,7 +75,7 @@ class AuthorController extends Controller
         if (!$resource) {
             return $this->error(
                 [
-                    "message" => "Erro ao excluir o Autor"
+                    'message' => 'Erro ao excluir o Autor'
                 ]
             );
         }

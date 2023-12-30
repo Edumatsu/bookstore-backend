@@ -34,11 +34,11 @@ abstract class BaseRepository
         $callback($filters[$name]);
     }
 
-    public function find(int $id, ?string $attribute="id", ?array $columns = array('*')): ?Model
+    public function find(int $id, ?string $attribute='id', ?array $columns = array('*')): ?Model
     {
         return $this->query()
             ->select($columns)
-            ->where($attribute, "=", $id)
+            ->where($attribute, '=', $id)
             ->first();
     }
 
@@ -57,14 +57,14 @@ abstract class BaseRepository
         return $this->model->create($data);
     }
 
-    public function update(array $data, int $id, ?string $attribute="id"): ?Model
+    public function update(array $data, int $id, ?string $attribute='id'): ?Model
     {
         $this->model->where($attribute, '=', $id)->update($data);
 
         return $this->model->where($attribute, '=', $id)->first();
     }
 
-    public function delete(int $id, ?string $attribute="id"): ?Model
+    public function delete(int $id, ?string $attribute='id'): ?Model
     {
         $data = $this->model->where($attribute, '=', $id);
         $response = $data->first();

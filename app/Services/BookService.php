@@ -8,11 +8,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-/**
- * Class BookService
- *
- * @package App\Services
- */
 class BookService
 {
     private $repository;
@@ -21,28 +16,17 @@ class BookService
     {
         $this->repository = $repository;
     }
-    
-    /**
-     * @return Collection
-     */
+
     public function index(): Collection
     {
         return $this->repository->all();
     }
 
-    /**
-     * @param  integer $id
-     * @return Collection
-     */
     public function show(int $id): ?Book
     {
-        return $this->repository->find($id, "Codl");
+        return $this->repository->find($id, 'Codl');
     }
 
-    /**
-     * @param  array $data
-     * @return Collection
-     */
     public function store(array $data): ?Book
     {
         DB::beginTransaction();
@@ -66,17 +50,12 @@ class BookService
         return null;
     }
 
-    /**
-     * @param  int   $id
-     * @param  array $data
-     * @return Collection
-     */
     public function update($id, $data): ?Book
     {
         DB::beginTransaction();
 
         try {
-            $resource = $this->repository->find($id, "Codl");
+            $resource = $this->repository->find($id, 'Codl');
 
             $ids = array_column($data['Autores'], 'id');
             $resource->authors()->sync($ids);
@@ -98,22 +77,18 @@ class BookService
         return null;
     }
 
-    /**
-     * @param  int $id
-     * @return JsonResponse
-     */
     public function destroy(int $id): ?Book
     {
         DB::beginTransaction();
 
         try {
-            $resource = $this->repository->find($id, "Codl");
+            $resource = $this->repository->find($id, 'Codl');
 
             if ($resource) {
                 $resource->authors()->detach();
                 $resource->subjects()->detach();
 
-                $this->repository->delete($id, "Codl");
+                $this->repository->delete($id, 'Codl');
 
                 DB::commit();
 

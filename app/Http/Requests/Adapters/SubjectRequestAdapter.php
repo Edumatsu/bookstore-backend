@@ -8,14 +8,14 @@ class SubjectRequestAdapter
     public static function transform(array $data): array
     {
         return [
-            "Descricao" => Arr::get($data, "description"),
+            'Descricao' => Arr::get($data, 'description'),
         ];
     }
 
     public static function revert(array $data): array
     {
         return [
-            "description" => Arr::get($data, "Descricao"),
+            'description' => Arr::get($data, 'Descricao'),
         ];
     }
 }

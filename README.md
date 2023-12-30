@@ -3,7 +3,7 @@ Criação e gerenciamento básico de Livros, Autores e Assuntos dentro de uma bi
 
 ## Requisitos
 - Docker Compose 1.29.2
-- Docket 24.0.2
+- Docker 24.0.2
 
 ## Tecnologias utilizadas no projeto
 - Laravel 10

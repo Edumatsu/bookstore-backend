@@ -10,7 +10,7 @@ class Author extends Model
 {
     use HasFactory;
 
-    protected $table = "Autor";
+    protected $table = 'Autor';
 
     protected $primaryKey = 'CodAu';
 
