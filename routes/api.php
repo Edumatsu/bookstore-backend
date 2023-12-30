@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\ReportController;
 
 Route::prefix('books')->controller(BookController::class)->group(
     function () {
@@ -36,7 +37,8 @@ Route::prefix('subjects')->controller(SubjectController::class)->group(
     }
 );
 
-/*Route::group(['prefix' => 'relatorios'], function() {
-    Route::get('/dashboard', 'RelatorioController@dashboard');
-    Route::get('/relatorio', 'RelatorioController@report');
-});*/
+Route::prefix('reports')->controller(ReportController::class)->group(
+    function () {
+        Route::get('/books-by-author', 'booksByAuthor');
+    }
+);
