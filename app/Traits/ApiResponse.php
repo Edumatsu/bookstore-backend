@@ -9,6 +9,7 @@ trait ApiResponse
 {
     /**
      * Build success response
+     *
      * @param  array $data
      * @return JsonResponse
      */

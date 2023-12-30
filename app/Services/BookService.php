@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Class BookService
+ *
  * @package App\Services
  */
 class BookService
@@ -30,7 +31,7 @@ class BookService
     }
 
     /**
-     * @param integer $id
+     * @param  integer $id
      * @return Collection
      */
     public function show(int $id): ?Book
@@ -39,7 +40,7 @@ class BookService
     }
 
     /**
-     * @param array $data
+     * @param  array $data
      * @return Collection
      */
     public function store(array $data): ?Book
@@ -63,8 +64,8 @@ class BookService
     }
 
     /**
-     * @param int $id
-     * @param array $data
+     * @param  int   $id
+     * @param  array $data
      * @return Collection
      */
     public function update($id, $data): ?Book
@@ -92,7 +93,7 @@ class BookService
     }
 
     /**
-     * @param int $id
+     * @param  int $id
      * @return JsonResponse
      */
     public function destroy(int $id): ?Book

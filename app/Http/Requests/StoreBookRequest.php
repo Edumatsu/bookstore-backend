@@ -86,6 +86,6 @@ class StoreBookRequest extends FormRequest
 
     public function validated($key = null, $default = null): array
     {
-        return BookRequestAdapter::transform( $this->all() );
+        return BookRequestAdapter::transform($this->all());
     }
 }

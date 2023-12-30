@@ -18,8 +18,8 @@ class DefaultCollection extends ResourceCollection
     /**
      * Create a new resource instance.
      *
-     * @param  mixed  $resourceClass
-     * @param  mixed  $resource
+     * @param  mixed $resourceClass
+     * @param  mixed $resource
      * @return void
      */
     public function __construct($resourceClass, $resource)
@@ -32,7 +32,7 @@ class DefaultCollection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @param  Request  $request
+     * @param  Request $request
      * @return array
      */
     public function toArray($request): array
@@ -42,9 +42,8 @@ class DefaultCollection extends ResourceCollection
         ];
 
         $pagination = request('pagination', true);
-        if (
-            $this->resource instanceof LengthAwarePaginator &&
-            filter_var($pagination, FILTER_VALIDATE_BOOLEAN)
+        if ($this->resource instanceof LengthAwarePaginator 
+            && filter_var($pagination, FILTER_VALIDATE_BOOLEAN)
         ) {
             $content['pagination'] = [
                 'total' => (int) $this->total(),

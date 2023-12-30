@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests\Adapters;
 
-class BookRequestAdapter {
+class BookRequestAdapter
+{
     public static function transform(array $data): array
     {
         return [

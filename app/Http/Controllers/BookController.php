@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 /**
  * Class BookController
+ *
  * @package App\Http\Controllers
  */
 class BookController extends Controller
@@ -35,7 +36,7 @@ class BookController extends Controller
     /**
      * Detalhe de um livro
      *
-     * @param Book $livro
+     * @param  Book $livro
      * @return JsonResponse
      */
     public function show(int $id): JsonResponse
@@ -43,9 +44,11 @@ class BookController extends Controller
         $resource = $this->service->show($id);
 
         if (!$resource) {
-            return $this->error([
-                "message" => "Livro não encontrado"
-            ]);
+            return $this->error(
+                [
+                    "message" => "Livro não encontrado"
+                ]
+            );
         }
 
         return $this->success(new BookResource($resource));
@@ -54,7 +57,7 @@ class BookController extends Controller
     /**
      * Cria um novo livro
      *
-     * @param BookRequest $request
+     * @param  BookRequest $request
      * @return JsonResponse
      */
     public function store(StoreBookRequest $request): JsonResponse
@@ -62,9 +65,11 @@ class BookController extends Controller
         $resource = $this->service->store($request->validated());
 
         if (!$resource) {
-            return $this->error([
-                "message" => "Erro na criação do livro"
-            ]);
+            return $this->error(
+                [
+                    "message" => "Erro na criação do livro"
+                ]
+            );
         }
 
         return $this->created(new BookResource($resource));
@@ -73,7 +78,7 @@ class BookController extends Controller
     /**
      * Atualiza um livro
      *
-     * @param Book $livro
+     * @param  Book $livro
      * @return JsonResponse
      */
     public function update(UpdateBookRequest $request, int $id): JsonResponse
@@ -81,9 +86,11 @@ class BookController extends Controller
         $resource = $this->service->update($id, $request->validated());
 
         if (!$resource) {
-            return $this->error([
-                "message" => "Erro ao alterar o Livro"
-            ]);
+            return $this->error(
+                [
+                    "message" => "Erro ao alterar o Livro"
+                ]
+            );
         }
 
         return $this->noContent();
@@ -92,7 +99,7 @@ class BookController extends Controller
     /**
      * Exclui um livro
      *
-     * @param Book $livro
+     * @param  Book $livro
      * @return JsonResponse
      */
     public function destroy(int $id): JsonResponse
@@ -100,9 +107,11 @@ class BookController extends Controller
         $resource = $this->service->destroy($id);
 
         if (!$resource) {
-            return $this->error([
-                "message" => "Erro ao excluir o Livro"
-            ]);
+            return $this->error(
+                [
+                    "message" => "Erro ao excluir o Livro"
+                ]
+            );
         }
 
         return $this->noContent();
