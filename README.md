@@ -42,12 +42,19 @@ Subir o PHP, Nginx e MySQL executando o comando:
 docker-compose up -d
 ```
 
-Para rodar os testes, acessar o container do php dentro do Docker:
+Acessar o container do php dentro do Docker, utilizando o comando:
 ```console
 docker exec -it spassu-php /bin/bash
 ```
+Estando dentro do container do php dentro do Docker, executar o seguintes comandos para a configuração inicial do projeto:
 
-Estando dentro do container do php dentro do Docker, executar o seguinte comando:
+```console
+composer install && php artisan migrate && chmod -R 777 storage/
+```
+
+Para rodar os testes, estando dentro do container do php dentro do Docker, executar o seguinte comando:
 ```console
 php artisan test
 ```
+
+O projeto estará disponível na URL: `http://localhost:8000`
