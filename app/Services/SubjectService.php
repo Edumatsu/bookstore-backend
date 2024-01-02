@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Repositories\SubjectRepository;
 use App\Models\Subject;
-use Exception;
+use Throwable;
+use App\Exceptions\SubjectException;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -22,12 +24,18 @@ class SubjectService
         return $this->repository->all();
     }
 
-    public function show(int $id): ?Subject
+    public function show(int $id): Subject
     {
-        return $this->repository->find($id, 'codAs');
+        $subject = $this->repository->find($id, 'codAs');
+
+        if (!$subject) {
+            throw SubjectException::notFound();
+        }
+
+        return $subject;
     }
 
-    public function store(array $data): ?Subject
+    public function store(array $data): Subject
     {
         DB::beginTransaction();
 
@@ -37,48 +45,60 @@ class SubjectService
             DB::commit();
 
             return $resource;
-        } catch (Exception) {
+        } 
+        catch (Throwable $th) {
             DB::rollBack();
-        }
 
-        return null;
+            match (true) {
+                $th instanceof QueryException => throw SubjectException::unableToSave(),
+                default => throw $th,
+            };
+        }
     }
 
-    public function update($id, $data): ?Subject
+    public function update($id, $data): Subject
     {
+        $subject = $this->show($id);
+
         DB::beginTransaction();
 
         try {
-            $resource = $this->repository->update($data, $id, 'codAs');
+            $this->repository->update($data, $id, 'codAs');
             
             DB::commit();
 
-            return $resource;
-        } catch (Exception) {
+            return $subject;
+        } 
+        catch (Throwable $th) {
             DB::rollBack();
-        }
 
-        return null;
+            match (true) {
+                $th instanceof QueryException => throw SubjectException::unableToSave(),
+                default => throw $th,
+            };
+        }
     }
 
-    public function destroy(int $id): ?Subject
+    public function destroy(int $id): Subject
     {
+        $subject = $this->show($id);
+
         DB::beginTransaction();
 
         try {
-            $resource = $this->repository->find($id, 'codAs');
+            $this->repository->delete($id, 'codAs');
 
-            if ($resource) {
-                $this->repository->delete($id, 'codAs');
+            DB::commit();
 
-                DB::commit();
-
-                return $resource;
-            }
-        } catch (Exception) {
+            return $subject;
+        } 
+        catch (Throwable $th) {
             DB::rollBack();
-        }
 
-        return null;
+            match (true) {
+                $th instanceof QueryException => throw SubjectException::unableToSave(),
+                default => throw $th,
+            };
+        }
     }
 }
