@@ -9,6 +9,7 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 use App\Models\Book;
 use App\Models\Author;
+use App\Models\Subject;
 use App\Http\Requests\Adapters\BookRequestAdapter;
 
 class BookControllerTest extends TestCase
@@ -20,7 +21,7 @@ class BookControllerTest extends TestCase
      */
     public function test_get_books_endpoint(): void
     {
-        Book::factory(3)->create();
+        Book::factory(1)->create();
 
         $response = $this->getJson('/api/books');
 
@@ -30,19 +31,19 @@ class BookControllerTest extends TestCase
             function (AssertableJson $json) {
                 $json->whereAllType(
                     [
-                    'data.0.id' => 'integer',
-                    'data.0.title' => 'string',
-                    'data.0.publishingCompany' => 'string',
-                    'data.0.authors' => 'array',
+                        'data.0.id' => 'integer',
+                        'data.0.title' => 'string',
+                        'data.0.publishingCompany' => 'string',
+                        'data.0.authors' => 'array',
                     ]
                 )->etc();
 
                 $json->hasAll(
                     [
-                    'data.0.id',
-                    'data.0.title',
-                    'data.0.publishingCompany',
-                    'data.0.authors',
+                        'data.0.id',
+                        'data.0.title',
+                        'data.0.publishingCompany',
+                        'data.0.authors',
                     ]
                 )->etc();
             }
@@ -64,19 +65,19 @@ class BookControllerTest extends TestCase
             function (AssertableJson $json) {
                 $json->whereAllType(
                     [
-                    'id' => 'integer',
-                    'title' => 'string',
-                    'publishingCompany' => 'string',
-                    'authors' => 'array',
+                        'id' => 'integer',
+                        'title' => 'string',
+                        'publishingCompany' => 'string',
+                        'authors' => 'array',
                     ]
                 );
 
                 $json->hasAll(
                     [
-                    'id',
-                    'title',
-                    'publishingCompany',
-                    'authors',
+                        'id',
+                        'title',
+                        'publishingCompany',
+                        'authors',
                     ]
                 )->etc();
             }
@@ -89,10 +90,18 @@ class BookControllerTest extends TestCase
     public function test_post_books_endpoint(): void
     {
         $book = Book::factory(1)->makeOne()->toArray();
+        
         $author = Author::factory(1)->createOne();
         $book['Autores'] = [
             [
                 "id" => $author->CodAu
+            ]
+        ];
+
+        $subject = Subject::factory(1)->createOne();
+        $book['Assuntos'] = [
+            [
+                "id" => $subject->codAs
             ]
         ];
 
@@ -106,26 +115,28 @@ class BookControllerTest extends TestCase
             function (AssertableJson $json) use ($book) {
                 $json->whereAllType(
                     [
-                    'id' => 'integer',
-                    'title' => 'string',
-                    'publishingCompany' => 'string',
-                    'authors' => 'array',
+                        'id' => 'integer',
+                        'title' => 'string',
+                        'publishingCompany' => 'string',
+                        'authors' => 'array',
+                        'subjects' => 'array',
                     ]
                 );
 
                 $json->hasAll(
                     [
-                    'id',
-                    'title',
-                    'publishingCompany',
-                    'authors',
+                        'id',
+                        'title',
+                        'publishingCompany',
+                        'authors',
+                        'subjects',
                     ]
                 );
 
                 $json->whereAll(
                     [
-                    'title' => $book['title'],
-                    'publishingCompany' => $book['publishingCompany']
+                        'title' => $book['title'],
+                        'publishingCompany' => $book['publishingCompany']
                     ]
                 )->etc();
             }

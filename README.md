@@ -26,7 +26,28 @@ Acessar o projeto:
 cd bookstore-backend
 ```
 
+Copiar o .env.example para o .env do projeto:
+```console
+cp .env.example .env
+```
+
+É possível modificar o .env para trocar o banco de dados para um de sua preferência:
+```console
+DB_CONNECTION=mysql // trocar de banco de dados
+DB_HOST=mysql // trocar o host (este host aponta para um container dentro do docker)
+```
+
 Subir o PHP, Nginx e MySQL executando o comando:
 ```console
 docker-compose up -d
+```
+
+Para rodar os testes, acessar o container do php dentro do Docker:
+```console
+docker exec -it spassu-php /bin/bash
+```
+
+Estando dentro do container do php dentro do Docker, executar o seguinte comando:
+```console
+php artisan test
 ```
