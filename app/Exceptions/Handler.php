@@ -21,16 +21,6 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * A list of the inputs that are never flashed for validation exceptions.
-     *
-     * @var array
-     */
-    protected $dontFlash = [
-        'password',
-        'password_confirmation',
-    ];
-
-    /**
      * Report or log an exception.
      *
      * @param  Throwable $e
@@ -57,12 +47,16 @@ class Handler extends ExceptionHandler
         }
 
         if ($e instanceof ModelNotFoundException) {
-            return response()->json(['message' => __('api.resource.not.found')], Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Model não encontrado'], Response::HTTP_NOT_FOUND);
+        }
+
+        if ($e instanceof BookStoreException) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
         if ($e instanceof PDOException) {
             $message = [
-                'message' => '[PDOException] ' . __('api.error.general'),
+                'message' => 'Ocorreu um erro inesperado ao registrar os dados',
             ];
 
             if (ENV('APP_DEBUG')) {
