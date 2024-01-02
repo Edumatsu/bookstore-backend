@@ -49,7 +49,7 @@ docker exec -it spassu-php /bin/bash
 Estando dentro do container do php dentro do Docker, executar o seguintes comandos para a configuração inicial do projeto:
 
 ```console
-composer install && php artisan migrate && chmod -R 777 storage/
+composer install && php artisan migrate && chmod -R 777 storage/ && mkdir tests/Unit
 ```
 
 Para rodar os testes, estando dentro do container do php dentro do Docker, executar o seguinte comando:
