@@ -81,11 +81,7 @@ class BookService
     {
         $this->checkExistsRelationships($data);
 
-        $book = $this->repository->find($id, 'Codl');
-
-        if (!$book) {
-            throw BookException::notFound();
-        }
+        $book = $this->show($id);
 
         DB::beginTransaction();
 
