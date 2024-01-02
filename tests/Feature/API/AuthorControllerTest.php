@@ -51,7 +51,7 @@ class AuthorControllerTest extends TestCase
     {
         $author = Author::factory(1)->createOne();
         
-        $response = $this->getJson('/api/authors/' . $author->Codl);
+        $response = $this->getJson('/api/authors/' . $author->CodAu);
 
         $response->assertStatus(200);
 
@@ -75,7 +75,7 @@ class AuthorControllerTest extends TestCase
     }
 
     /**
-     * Testa o endpoint de criação do autor.
+     * Testa o endpoint de criação do autor .
      */
     public function test_post_authors_endpoint(): void
     {
