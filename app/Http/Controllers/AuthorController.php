@@ -27,28 +27,12 @@ class AuthorController extends Controller
     {
         $resource = $this->service->show($id);
 
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Autor não encontrado'
-                ]
-            );
-        }
-
         return $this->success(new AuthorResource($resource));
     }
 
     public function store(StoreAuthorRequest $request): JsonResponse
     {
         $resource = $this->service->store($request->validated());
-
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Erro na criação do autor'
-                ]
-            );
-        }
 
         return $this->created(new AuthorResource($resource));
     }
@@ -57,28 +41,12 @@ class AuthorController extends Controller
     {
         $resource = $this->service->update($id, $request->validated());
 
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Erro ao alterar o Autor'
-                ]
-            );
-        }
-
         return $this->noContent();
     }
 
     public function destroy(int $id): JsonResponse
     {
         $resource = $this->service->destroy($id);
-
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Erro ao excluir o Autor'
-                ]
-            );
-        }
 
         return $this->noContent();
     }

@@ -27,28 +27,12 @@ class SubjectController extends Controller
     {
         $resource = $this->service->show($id);
 
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Assunto não encontrado'
-                ]
-            );
-        }
-
         return $this->success(new SubjectResource($resource));
     }
 
     public function store(StoreSubjectRequest $request): JsonResponse
     {
         $resource = $this->service->store($request->validated());
-
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Erro na criação do Assunto'
-                ]
-            );
-        }
 
         return $this->created(new SubjectResource($resource));
     }
@@ -57,28 +41,12 @@ class SubjectController extends Controller
     {
         $resource = $this->service->update($id, $request->validated());
 
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Erro ao alterar o Assunto'
-                ]
-            );
-        }
-
         return $this->noContent();
     }
 
     public function destroy(int $id): JsonResponse
     {
         $resource = $this->service->destroy($id);
-
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Erro ao excluir o Assunto'
-                ]
-            );
-        }
 
         return $this->noContent();
     }

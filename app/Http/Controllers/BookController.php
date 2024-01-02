@@ -27,28 +27,12 @@ class BookController extends Controller
     {
         $resource = $this->service->show($id);
 
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Livro não encontrado'
-                ]
-            );
-        }
-
         return $this->success(new BookResource($resource));
     }
 
     public function store(StoreBookRequest $request): JsonResponse
     {
         $resource = $this->service->store($request->validated());
-
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Erro na criação do livro'
-                ]
-            );
-        }
 
         return $this->created(new BookResource($resource));
     }
@@ -57,28 +41,12 @@ class BookController extends Controller
     {
         $resource = $this->service->update($id, $request->validated());
 
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Erro ao alterar o Livro'
-                ]
-            );
-        }
-
         return $this->noContent();
     }
 
     public function destroy(int $id): JsonResponse
     {
         $resource = $this->service->destroy($id);
-
-        if (!$resource) {
-            return $this->error(
-                [
-                    'message' => 'Erro ao excluir o Livro'
-                ]
-            );
-        }
 
         return $this->noContent();
     }
