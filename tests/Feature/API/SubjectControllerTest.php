@@ -51,7 +51,7 @@ class SubjectControllerTest extends TestCase
     {
         $subject = Subject::factory(1)->createOne();
         
-        $response = $this->getJson('/api/subjects/' . $subject->Codl);
+        $response = $this->getJson('/api/subjects/' . $subject->codAs);
 
         $response->assertStatus(200);
 
